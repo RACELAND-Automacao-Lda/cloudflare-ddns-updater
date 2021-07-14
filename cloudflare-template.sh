@@ -4,12 +4,15 @@ auth_email=""                                      # The email used to login 'ht
 auth_key=""                                        # Top right corner, "My profile" > "Global API Key"
 zone_identifier=""                                 # Can be found in the "Overview" tab of your domain
 record_name=""                                     # Which record you want to be synced
-proxy=true                                         # Set the proxy to true or false 
+proxy=false                                        # Set the proxy to true or false 
 
 ###########################################
 ## Check if we have an public IP
 ###########################################
-ip=$(curl -s https://api.ipify.org || curl -s https://ipv4.icanhazip.com/)
+#ip=$(curl -s https://api.ipify.org || curl -s https://ipv4.icanhazip.com/)
+ip=$(curl -4 -fSs https://cloudflare.com/cdn-cgi/trace | awk -F= '/ip/ { print $2 }')
+
+
 if [ "${ip}" == "" ]; then 
   message="No public IP found."
   >&2 echo -e "${message}" >> ~/log
